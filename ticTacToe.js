@@ -9,13 +9,40 @@ const gameBoard = (() => {
         }
     }
 
+    const makeMark = function(space, symbol){
+        board[space] = symbol;
+        renderBoard();
+    }
+
+    const boardArray = () => {
+        const array = Array.from(board);
+        return array;
+    }
+
     return {
         renderBoard,
+        makeMark,
+        board: boardArray,
     }
+})();
+
+const gameController = (()=>{
+    const players = []
+    let currentPlayer = players[0];
 })()
 
-const player = function() {
-    return {};
-}
+const Player = function(name, symbol) {
+    function returnName() {
+        return name;
+    }
 
+    function returnSymbol() {
+        return symbol;
+    }
+    return {
+        name: returnName,
+        symbol: returnSymbol
+    };
+}
+const Jeff = Player("Jeff", "x");
 gameBoard.renderBoard();
