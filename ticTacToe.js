@@ -19,13 +19,15 @@ const gameBoard = (() => {
     }
 
     const reset = () => {
-        board.forEach((space) => {
-            space = '';
-        })
+        for (let i = 0 ; i < board.length; i++) {
+            board[i] = "";
+        }
+        renderBoard();
     }
 
+    renderBoard();
+
     return {
-        renderBoard,
         makeMark,
         board: boardArray,
         reset,
@@ -55,6 +57,7 @@ const gameController = (()=>{
     
     const domBoard = document.querySelector("#ticTacToeGrid");
     domBoard.addEventListener("click", (e)=> {
+        if (winner) return;
         const target = e.target;
         const squareNumber = Number(target.id.slice(6))
         //check if space already has a symbol on it
@@ -63,7 +66,11 @@ const gameController = (()=>{
         }
         gameBoard.makeMark(squareNumber, currentPlayer.symbol());
         //check win conditions
-        winCheck();
+        winner = winCheck();
+        if (winner){
+            //show congrats message
+            console.log(`${winner.name()} wins`);
+        }
         switchPlayer();
     })
 
@@ -77,17 +84,29 @@ const gameController = (()=>{
 
     function winCheck() {
         const board = gameBoard.board();
-        if ((board[0] === board[3] && board[3] === board[6]) || (board[1] === board[4] && board[4] === board[7]) ||
-            (board[2] === board[5] && board[5] === board[8]) || (board[0] === board[4] && board[4] === board[8]) ||
-            (board[2] === board[4] && board[4] === board[6]) || (board[0] === board[1] && board[1] === board[2]) ||
-            (board[3] === board[4] && board[4] === board[5]) || (board[6] === board[7] && board[7]=== board[8])) {
-                console.log(true);
+        const symbol = currentPlayer.symbol();
+        if ((symbol === board[0] && symbol === board[3] && symbol === board[6]) || 
+            (symbol === board[1] && symbol === board[4] && symbol === board[7]) ||
+            (symbol === board[2] && symbol === board[5] && symbol === board[8]) || 
+            (symbol === board[0] && symbol === board[4] && symbol === board[8]) ||
+            (symbol === board[2] && symbol === board[4] && symbol === board[6]) ||
+            (symbol === board[0] && symbol === board[1] && symbol === board[2]) ||
+            (symbol === board[3] && symbol === board[4] && symbol === board[5]) || 
+            (symbol === board[6] && symbol === board[7] && symbol === board[8])) {
+                return currentPlayer;
             }
         if (!gameBoard.board().includes("")) {
             console.log("Nobody wins :(")
         }
     }
 
+    const reset = () => {
+        winner = "";
+        gameBoard.reset();
+    }
+
+    return {
+        reset,
+    }
+
 })()
-const Jeff = Player("Jeff", "x");
-gameBoard.renderBoard();
