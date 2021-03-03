@@ -50,6 +50,7 @@ const gameController = (()=>{
     const player1 = Player("player1", "X");
     const player2 = Player("player2", "O");
     const players = [player1, player2];
+    let winner;
     let currentPlayer = players[0];
     
     const domBoard = document.querySelector("#ticTacToeGrid");
@@ -61,6 +62,8 @@ const gameController = (()=>{
             return;
         }
         gameBoard.makeMark(squareNumber, currentPlayer.symbol());
+        //check win conditions
+        winCheck();
         switchPlayer();
     })
 
@@ -71,6 +74,19 @@ const gameController = (()=>{
             currentPlayer = players[0]
         }
     };
+
+    function winCheck() {
+        const board = gameBoard.board();
+        if ((board[0] === board[3] && board[3] === board[6]) || (board[1] === board[4] && board[4] === board[7]) ||
+            (board[2] === board[5] && board[5] === board[8]) || (board[0] === board[4] && board[4] === board[8]) ||
+            (board[2] === board[4] && board[4] === board[6]) || (board[0] === board[1] && board[1] === board[2]) ||
+            (board[3] === board[4] && board[4] === board[5]) || (board[6] === board[7] && board[7]=== board[8])) {
+                console.log(true);
+            }
+        if (!gameBoard.board().includes("")) {
+            console.log("Nobody wins :(")
+        }
+    }
 
 })()
 const Jeff = Player("Jeff", "x");
