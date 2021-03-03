@@ -69,7 +69,7 @@ const gameController = (()=>{
         winner = winCheck();
         if (winner){
             //show congrats message
-            console.log(`${winner.name()} wins`);
+            alert(`${winner.name()} wins`);
         }
         switchPlayer();
     })
@@ -102,8 +102,14 @@ const gameController = (()=>{
 
     const reset = () => {
         winner = "";
+        currentPlayer = players[0];
         gameBoard.reset();
     }
+
+    const resetButton = document.querySelector("#reset");
+    resetButton.addEventListener("click", ()=> {
+        gameController.reset();
+    })
 
     return {
         reset,
